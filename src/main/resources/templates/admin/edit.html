@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Edit Page</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+<body>
+
+<form th:method="PATCH"
+      th:action="@{/admin/users/{id}(id=${id})}"
+      th:object="${user}">
+    <fieldset>
+        <legend th:text="'User #' + ${id} + ' editing'"></legend>
+        <input type="hidden" th:field="*{id}" />
+        
+        <label for="login">Login</label>
+        <input class="input" id="login" type="text" th:field="*{login}" required>
+        <br>
+        <label for="password">New password</label>
+        <input class="input" id="password" type="password" th:field="*{password}">
+        <br>
+        <label for="name">Name</label>
+        <input class="input" id="name" type="text" th:field="*{name}" required>
+        <br>
+        <label for="surname">Surname</label>
+        <input class="input" id="surname" type="text" th:field="*{surname}" required>
+        <br>
+        <label for="email">Email</label>
+        <input class="input" id="email" type="text" th:field="*{email}" required>
+        <br>
+        <label for="roles">User roles (multiple select):</label>
+        <select id="roles" th:field="*{roles}" multiple th:size="${allRoles.size()}">
+            <option th:each="role : ${allRoles}"
+                    th:value="${role.getId()}"
+                    th:text="${role.getName()}">
+            </option>
+        </select>
+        <br><br>
+        <input class="btn" type="submit" value="Update User">
+    </fieldset>
+</form>
+
+<div class="links">
+    <a th:href="@{/logout}">logout</a>
+    <a th:href="@{/admin/users}">back</a>
+</div>
+
+</body>
+</html>
