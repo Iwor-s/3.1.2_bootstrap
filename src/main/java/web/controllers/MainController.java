@@ -1,18 +1,17 @@
 package web.controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import web.models.User;
+import web.service.UserService;
 
 import java.security.Principal;
 
 @AllArgsConstructor
 @Controller
 public class MainController {
-    UserDetailsService userDetailsService;
+    UserService userService;
     
     @GetMapping("login")
     public String loginPage() {
@@ -25,9 +24,8 @@ public class MainController {
     }
     
     @GetMapping("user")
-    public String printWelcome(Model model, Principal principal) {
-        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
-        model.addAttribute("user", user);
+    public String userPage(Model model, Principal principal) {
+        model.addAttribute("user", userService.findUserByEmail(principal.getName()));
         return "user";
     }
 }

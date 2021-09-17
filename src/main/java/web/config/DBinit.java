@@ -17,35 +17,33 @@ public class DBinit {
     
     @PostConstruct
     public void createData() {
-        Role role1 = new Role("ADMIN");
-        Role role2 = new Role("USER");
-        roleService.saveRole(role1);
-        roleService.saveRole(role2);
+        roleService.saveRole(new Role("ADMIN"));
+        roleService.saveRole(new Role("USER"));
         
         User user1 = new User();
-        user1.setLogin("tom");
-        user1.setPassword("tom");
-        user1.setName("Tom");
-        user1.setSurname("Jones");
+        user1.setFirstName("Tom");
+        user1.setLastName("Jones");
+        user1.setAge(27);
         user1.setEmail("tom@gmail.com");
-        user1.addRole(role1);
+        user1.setPassword("tom");
+        user1.addRole(roleService.getRoleByName("ADMIN"));
         
         User user2 = new User();
-        user2.setLogin("анна");
-        user2.setPassword("анна");
-        user2.setName("Анна");
-        user2.setSurname("Волкова");
+        user2.setFirstName("Анна");
+        user2.setLastName("Волкова");
+        user2.setAge(24);
         user2.setEmail("ann@mail.ru");
-        user2.addRole(role2);
+        user2.setPassword("анна");
+        user2.addRole(roleService.getRoleByName("USER"));
         
         User user3 = new User();
-        user3.setLogin("sam");
-        user3.setPassword("sam");
-        user3.setName("Sam");
-        user3.setSurname("Black");
+        user3.setFirstName("Sam");
+        user3.setLastName("Black");
+        user3.setAge(35);
         user3.setEmail("sam@yahoo.com");
-        user3.addRole(role1);
-        user3.addRole(role2);
+        user3.setPassword("sam");
+        user3.addRole(roleService.getRoleByName("ADMIN"));
+        user3.addRole(roleService.getRoleByName("USER"));
         
         userService.saveUser(user1);
         userService.saveUser(user2);

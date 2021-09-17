@@ -40,12 +40,6 @@ public class AdminController {
         return "admin/edit";
     }
     
-    @GetMapping("{id}")
-    public String showInfo(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "admin/user";
-    }
-    
     @PatchMapping("{id}")
     public String update(@ModelAttribute("user") User user) {
         userService.updateUser(user);

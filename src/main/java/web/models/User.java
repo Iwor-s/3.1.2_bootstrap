@@ -1,6 +1,8 @@
 package web.models;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,13 +23,14 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
+    private int age;
     @Column(unique = true)
-    private String login;
-    private String password;
-    private String name;
-    private String surname;
     private String email;
-    private boolean enabled;
+    private String password;
     
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @Fetch(FetchMode.JOIN)
@@ -36,7 +39,6 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-    
     
     public void addRole(Role role) {
         if (roles == null) {
@@ -51,7 +53,7 @@ public class User implements UserDetails {
     }
     @Override
     public String getUsername() {
-        return login;
+        return email;
     }
     @Override
     public boolean isAccountNonExpired() {
@@ -67,7 +69,7 @@ public class User implements UserDetails {
     }
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
     
     @Override
@@ -76,28 +78,26 @@ public class User implements UserDetails {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return id == user.id
-                && Objects.equals(login, user.login)
-                && Objects.equals(password, user.password)
-                && Objects.equals(name, user.name)
-                && Objects.equals(surname, user.surname)
+                && age == user.age
+                && Objects.equals(firstName, user.firstName)
+                && Objects.equals(lastName, user.lastName)
                 && Objects.equals(email, user.email)
-                && enabled == user.enabled
+                && Objects.equals(password, user.password)
                 && Objects.equals(roles, user.roles);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, name, surname, email, enabled, roles);
+        return Objects.hash(id, firstName, lastName, age, email, password, roles);
     }
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
                 ", email='" + email + '\'' +
-                ", isEnabled=" + enabled +
+                ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';
     }

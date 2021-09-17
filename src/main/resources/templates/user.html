@@ -11,17 +11,23 @@
 <form>
     <fieldset>
         <legend>User Info</legend>
-        
-        <p>login:</p>
-        <h3 th:text="${user.getLogin()}"></h3>
-        <p>password:</p>
-        <h3 th:text="${user.getPassword()}"></h3>
-        <p>name:</p>
-        <h3 th:text="${user.getName()}"></h3>
-        <p>surname:</p>
-        <h3 th:text="${user.getSurname()}"></h3>
-        <p>email:</p>
+    
+        <p>ID:</p>
+        <h3 th:text="${user.getId()}"></h3>
+        <p>First Name:</p>
+        <h3 th:text="${user.getFirstName()}"></h3>
+        <p>Last Name:</p>
+        <h3 th:text="${user.getLastName()}"></h3>
+        <p>Age:</p>
+        <h3 th:text="${user.getAge()}"></h3>
+        <p>Email:</p>
         <h3 th:text="${user.getEmail()}"></h3>
+        <p>Role:</p>
+        <h3>
+            <span th:each="role : ${user.getRoles()}">
+                <span th:text="${role}"></span>
+            </span>
+        </h3>
         
     </fieldset>
 </form>

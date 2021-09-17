@@ -1,6 +1,6 @@
 package web.service;
 
-import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import web.models.User;
@@ -8,12 +8,15 @@ import web.repository.UserRepository;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
     
     @Override
     public List<User> getAllUsers() {
@@ -26,14 +29,13 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public User findUserByLogin(String login) {
-        return userRepository.findUserByLogin(login);
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
     
     @Override
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEnabled(true);
         userRepository.save(user);
     }
     
@@ -44,7 +46,6 @@ public class UserServiceImpl implements UserService {
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        user.setEnabled(true);
         userRepository.save(user);
     }
     
