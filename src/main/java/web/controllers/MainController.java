@@ -1,12 +1,12 @@
 package web.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import web.models.User;
 import web.service.UserService;
-
-import java.security.Principal;
 
 @AllArgsConstructor
 @Controller
@@ -18,14 +18,9 @@ public class MainController {
         return "login";
     }
     
-    @GetMapping("admin")
-    public String adminPage() {
-        return "redirect:admin/users";
-    }
-    
     @GetMapping("user")
-    public String userPage(Model model, Principal principal) {
-        model.addAttribute("user", userService.findUserByEmail(principal.getName()));
-        return "user";
+    public String userPage(@AuthenticationPrincipal User principal, Model model) {
+        model.addAttribute("princ", principal);
+        return "admin";
     }
 }

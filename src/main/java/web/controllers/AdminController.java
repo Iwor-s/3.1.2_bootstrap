@@ -1,6 +1,7 @@
 package web.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,45 +11,38 @@ import web.service.UserService;
 
 @AllArgsConstructor
 @Controller
-@RequestMapping("/admin/users")
+@RequestMapping("/admin")
 public class AdminController {
     private final RoleService roleService;
     private final UserService userService;
     
     @GetMapping
-    public String showAll(Model model) {
+    public String showAll(@AuthenticationPrincipal User principal, Model model) {
+        model.addAttribute("princ", principal);
         model.addAttribute("users", userService.getAllUsers());
-        return "admin/users";
-    }
-    
-    @GetMapping("new")
-    public String newUser(Model model, @ModelAttribute("user") User user) {
         model.addAttribute("allRoles", roleService.getAllRoles());
-        return "admin/new";
+        model.addAttribute("new_user", new User());
+        return "admin";
     }
     
     @PostMapping
-    public String create(@ModelAttribute("user") User user) {
+    public String create(@ModelAttribute("new_user") User user) {
         userService.saveUser(user);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
     
-    @GetMapping("{id}/edit")
-    public String edit(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", userService.getUserById(id));
-        model.addAttribute("allRoles", roleService.getAllRoles());
-        return "admin/edit";
-    }
-    
-    @PatchMapping("{id}")
+    @PatchMapping("edit")
     public String update(@ModelAttribute("user") User user) {
+        System.out.println();
+        System.out.println(user);
+        System.out.println();
         userService.updateUser(user);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
     
     @DeleteMapping("{id}")
     public String delete(@PathVariable("id") long id) {
         userService.deleteUserById(id);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 }
