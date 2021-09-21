@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.w3.org/1999/xhtml"
-      lang="en"
       class="h-100">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link th:href="@{/css/bootstrap5.min.css}" rel="stylesheet">
-    <link th:href="@{/img/favicon.png}" rel="shortcut icon" type="image/jpg">
+    <link th:href="@{/img/favicon.png}" rel="icon" type="image/png">
     <title>Main Page</title>
 </head>
 <body class="h-100">
 
-<div class="container-fluid h-100 p-0">
+<div class="container-fluid d-flex flex-column h-100 p-0">
     <header class="bg-dark text-white p-3 d-flex justify-content-between">
         <div style="font-size: 1.2rem">
             <span class="font-weight-bold" th:text="${princ.email}">Email</span>
@@ -23,7 +24,7 @@
         <div><a class="text-white-50" th:href="@{/logout}">Logout</a></div>
     </header>
     
-    <div class="row h-100 mx-0">
+    <div class="h-100 mx-0">
         <div class="d-flex h-100 px-0">
             <div class="col-2 pt-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <button sec:authorize="hasAuthority('ADMIN')" class="active nav-link text-start" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home">Admin</button>
@@ -116,10 +117,11 @@
                                                                         </div>
                                                                         <div>
                                                                             <label class="form-label fw-bold mb-1 mt-3" for="edit-roles">Role</label>
-                                                                            <select class="form-select" id="edit-roles" th:name="roles" multiple th:size="${allRoles.size()}">
+                                                                            <select class="form-select" id="edit-roles" th:name="roles" multiple th:size="${allRoles.size()}" required>
                                                                                 <option th:each="role : ${allRoles}"
                                                                                         th:value="${role.id}"
-                                                                                        th:text="${role.name}" th:selected="${user.roles.contains(role)}">
+                                                                                        th:text="${role.name}"
+                                                                                        th:selected="${user.roles.contains(role)}">
                                                                                 </option>
                                                                             </select>
                                                                         </div>
@@ -207,30 +209,31 @@
                                         <fieldset>
                                             <div>
                                                 <label class="form-label fw-bold mb-1 mt-3" for="name">First Name</label>
-                                                <input class="form-control" id="name" type="text" th:field="*{firstName}" required>
+                                                <input class="form-control" id="name" type="text" th:name="firstName" required>
                                             </div>
                                             <div>
                                                 <label class="form-label fw-bold mb-1 mt-3" for="surname">Last Name</label>
-                                                <input class="form-control" id="surname" type="text" th:field="*{lastName}" required>
+                                                <input class="form-control" id="surname" type="text" th:name="lastName" required>
                                             </div>
                                             <div>
                                                 <label class="form-label fw-bold mb-1 mt-3" for="login">Age</label>
-                                                <input class="form-control" id="login" type="number" th:field="*{age}" required>
+                                                <input class="form-control" id="login" type="number" th:name="age" required>
                                             </div>
                                             <div>
                                                 <label class="form-label fw-bold mb-1 mt-3" for="email">Email</label>
-                                                <input class="form-control" id="email" type="email" th:field="*{email}" required>
+                                                <input class="form-control" id="email" type="email" th:name="email" required>
                                             </div>
                                             <div>
                                                 <label class="form-label fw-bold mb-1 mt-3" for="password">Password</label>
-                                                <input class="form-control" id="password" type="password" th:field="*{password}">
+                                                <input class="form-control" id="password" type="password" th:name="password" required>
                                             </div>
                                             <div>
                                                 <label class="form-label fw-bold mb-1 mt-3" for="roles">Role</label>
-                                                <select class="form-select" id="roles" th:field="*{roles}" multiple th:size="${allRoles.size()}">
+                                                <select class="form-select" id="roles" th:name="roles" multiple th:size="${allRoles.size()}" required>
                                                     <option th:each="role : ${allRoles}"
                                                             th:value="${role.id}"
-                                                            th:text="${role.name}">
+                                                            th:text="${role.name}"
+                                                            th:selected="${role.name.equals('USER')}">
                                                     </option>
                                                 </select>
                                             </div>

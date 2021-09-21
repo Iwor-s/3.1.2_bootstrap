@@ -14,7 +14,12 @@ public class MainController {
     UserService userService;
     
     @GetMapping("login")
-    public String loginPage() {
+    public String loginPage(@AuthenticationPrincipal User principal) {
+        if(principal != null) {
+            return principal.getRoles().toString().contains("ADMIN")
+                    ? "redirect:/admin"
+                    : "redirect:/user";
+        }
         return "login";
     }
     

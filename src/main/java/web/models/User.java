@@ -9,10 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -40,11 +37,11 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
     
-    public void addRole(Role role) {
+    public void addRole(Role ...role) {
         if (roles == null) {
             roles = new HashSet<>();
         }
-        roles.add(role);
+        roles.addAll(Arrays.asList(role));
     }
     
     @Override

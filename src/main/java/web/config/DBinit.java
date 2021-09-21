@@ -6,7 +6,6 @@ import web.models.Role;
 import web.models.User;
 import web.service.RoleService;
 import web.service.UserService;
-
 import javax.annotation.PostConstruct;
 
 @AllArgsConstructor
@@ -17,8 +16,10 @@ public class DBinit {
     
     @PostConstruct
     public void createData() {
-        roleService.saveRole(new Role("ADMIN"));
-        roleService.saveRole(new Role("USER"));
+        Role role1 = new Role("ADMIN");
+        Role role2 = new Role("USER");
+        roleService.saveRole(role1);
+        roleService.saveRole(role2);
         
         User user1 = new User();
         user1.setFirstName("Tom");
@@ -26,7 +27,7 @@ public class DBinit {
         user1.setAge((byte) 27);
         user1.setEmail("tom@gmail.com");
         user1.setPassword("tom");
-        user1.addRole(roleService.getRoleByName("ADMIN"));
+        user1.addRole(role1);
         
         User user2 = new User();
         user2.setFirstName("Анна");
@@ -34,7 +35,7 @@ public class DBinit {
         user2.setAge((byte) 24);
         user2.setEmail("ann@mail.ru");
         user2.setPassword("анна");
-        user2.addRole(roleService.getRoleByName("USER"));
+        user2.addRole(role2);
         
         User user3 = new User();
         user3.setFirstName("Sam");
@@ -42,8 +43,7 @@ public class DBinit {
         user3.setAge((byte) 35);
         user3.setEmail("sam@yahoo.com");
         user3.setPassword("sam");
-        user3.addRole(roleService.getRoleByName("ADMIN"));
-        user3.addRole(roleService.getRoleByName("USER"));
+        user3.addRole(role1, role2);
         
         userService.saveUser(user1);
         userService.saveUser(user2);
